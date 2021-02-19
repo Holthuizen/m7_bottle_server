@@ -1,6 +1,7 @@
 {
     "version": 0.1,
 	"host": "localhost",
-	"port": 8080
+	"port": 8080,
+	"secret": "4fa9ab1b30e0ee09f0a88618315946ab" 
 }
 
