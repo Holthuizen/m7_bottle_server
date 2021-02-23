@@ -4,7 +4,7 @@
 
 <h2>Submit question</h2>
 
-<form action="/question/new" method="POST">
+<form action="/member/question/create" method="POST">
   <label for="title">Title:</label><br>
   <input type="text" name="title" value=""><br>
   <label for="dname">Describtion:</label><br>
