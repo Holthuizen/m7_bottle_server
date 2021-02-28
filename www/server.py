@@ -93,7 +93,13 @@ def index():
 def index():
     if not Auth.auth(): 
         redirect(SERVER_URL+"/login")
-    return template('member/questions', server_url = SERVER_URL)
+    #pull in questions
+    q = Question()
+    if q.status_code == 200: 
+        r = q.read()
+        data = r.json()
+        return template('member/questions', server_url = SERVER_URL, data=data)
+
 
 @get('/member/question/create')
 def index():
