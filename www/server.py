@@ -55,8 +55,35 @@ def logout():
     redirect(SERVER_URL)
 '''Auth ---------------------------------------------------------------------''' 
 
+#protected routes: 
 '''Member---------------------------------------------------------------------''' 
 from Question import Question
+
+
+@get('/member')
+def index():
+    if not Auth.auth(): 
+        redirect(SERVER_URL+"/login")
+    return template('member/index', server_url = SERVER_URL)
+
+@get('/member/questions')
+def index():
+    if not Auth.auth(): 
+        redirect(SERVER_URL+"/login")
+
+    #pull in questions
+    q = Question()
+    r = q.read()
+    if r.status_code == 200: 
+        data = r.json()
+        return template('member/questions', server_url = SERVER_URL, data=data)
+
+
+@get('/member/question/create')
+def index():
+    if not Auth.auth(): 
+        redirect(SERVER_URL+"/login")
+    return template('member/create_question_form', server_url = SERVER_URL)   
 
 @post("/member/question/create")
 def submit_question(): 
@@ -79,34 +106,6 @@ def submit_question():
     res = q.create(Auth.auth(),data)
     _id =  res.json()['id']  or 0 # todo return only a view of the question
     redirect(f"{SERVER_URL}/member/questions")
-
-
-#protected routes: 
-
-@get('/member')
-def index():
-    if not Auth.auth(): 
-        redirect(SERVER_URL+"/login")
-    return template('member/index', server_url = SERVER_URL)
-
-@get('/member/questions')
-def index():
-    if not Auth.auth(): 
-        redirect(SERVER_URL+"/login")
-    #pull in questions
-    q = Question()
-    if q.status_code == 200: 
-        r = q.read()
-        data = r.json()
-        return template('member/questions', server_url = SERVER_URL, data=data)
-
-
-@get('/member/question/create')
-def index():
-    if not Auth.auth(): 
-        redirect(SERVER_URL+"/login")
-    return template('member/create_question_form', server_url = SERVER_URL)   
-
 
 
 

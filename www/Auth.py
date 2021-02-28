@@ -10,17 +10,20 @@ class Authenticate:
     def login(self,username,pw): 
         if not (username and pw): 
             return False
+        
         #auth request
         headers = {'Content-Type': 'application/json'}
         data = json.dumps({'identifier':username, 'password':pw})
         print(data)
         #return data, headers
-        r = request.post(self.api_url, data=data, headers=headers)
-        print(r.json())
-
-        if r.status_code != 200: 
+        try:
+            r = request.post(self.api_url, data=data, headers=headers)
+            print(r.json())
+            if r.status_code != 200: 
+                return False
+        except: 
             return False
-
+        
         jwt = r.json()['jwt']
         bottle.response.set_cookie("token",jwt,**self.config)
         return True
